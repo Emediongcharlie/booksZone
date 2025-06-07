@@ -36,6 +36,7 @@ public class Sellers {
     }
 
     @ManyToOne
+    @JoinColumn(name = "seller_id")
     private Customer customer;
 
     public AvailabilityStatus getAvailabilityStatus() {

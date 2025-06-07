@@ -91,5 +91,6 @@ public class Customer {
     }
 
     @ManyToOne()
+    @JoinColumn(name = "customer_id")
     private Sellers seller;
 }
