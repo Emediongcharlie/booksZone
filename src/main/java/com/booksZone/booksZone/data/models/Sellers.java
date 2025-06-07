@@ -1,12 +1,50 @@
 package com.booksZone.booksZone.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Sellers {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false, unique = true)
+    private String email;
+    private String phoneNumber;
+    private String bookShopName;
+    @Column(nullable = false)
+    private String password;
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<Customer> customers;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private AvailabilityStatus availabilityStatus;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    @ManyToOne
+    private Customer customer;
+
+    public AvailabilityStatus getAvailabilityStatus() {
+        return availabilityStatus;
+    }
+
+    public void setAvailabilityStatus(AvailabilityStatus availabilityStatus) {
+        this.availabilityStatus = availabilityStatus;
+    }
 
     public Long getId() {
         return id;
@@ -15,10 +53,6 @@ public class Sellers {
     public void setId(Long id) {
         this.id = id;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     public String getFirstName() {
         return firstName;
@@ -52,11 +86,6 @@ public class Sellers {
         this.phoneNumber = phoneNumber;
     }
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-
     public String getPassword() {
         return password;
     }
@@ -65,5 +94,29 @@ public class Sellers {
         this.password = password;
     }
 
-    private String password;
+    public String getBookShopName() {
+        return bookShopName;
+    }
+
+    public void setBookShopName(String bookShopName) {
+        this.bookShopName = bookShopName;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
+
+
 }

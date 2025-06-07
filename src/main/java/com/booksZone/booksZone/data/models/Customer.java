@@ -1,9 +1,8 @@
 package com.booksZone.booksZone.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -11,8 +10,11 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false, unique = true)
     private String email;
 
     public String getPassword() {
@@ -22,8 +24,6 @@ public class Customer {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String password;
 
     public String getPhoneNumber() {
 
@@ -66,5 +66,30 @@ public class Customer {
         this.id = id;
     }
 
+    @Column(nullable = false)
     private String phoneNumber;
+    @Column(nullable = false)
+    private String password;
+
+    public List<Sellers> getSellers() {
+        return sellers;
+    }
+
+    public void setSellers(List<Sellers> sellers) {
+        this.sellers = sellers;
+    }
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Sellers> sellers;
+
+    public Sellers getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Sellers seller) {
+        this.seller = seller;
+    }
+
+    @ManyToOne()
+    private Sellers seller;
 }
