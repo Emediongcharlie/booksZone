@@ -1,6 +1,8 @@
 package com.booksZone.booksZone.dtos.response;
 
-public class DeleteProductResponse {
+public class EditProductResponse {
+
+    private Long id;
 
     public String getMessage() {
         return message;
@@ -10,8 +12,6 @@ public class DeleteProductResponse {
         this.message = message;
     }
 
-    private String message;
-
     public Long getId() {
         return id;
     }
@@ -20,5 +20,5 @@ public class DeleteProductResponse {
         this.id = id;
     }
 
-    private Long id;
+    private String message;
 }

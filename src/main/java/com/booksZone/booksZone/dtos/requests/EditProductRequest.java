@@ -1,6 +1,6 @@
 package com.booksZone.booksZone.dtos.requests;
 
-public class AddProductRequest {
+public class EditProductRequest {
 
     public Long getProductId() {
         return productId;
@@ -12,34 +12,6 @@ public class AddProductRequest {
 
     private Long productId;
     private String productName;
-    private String authorName;
-
-    public int getProductQuantity() {
-        return productQuantity;
-    }
-
-    public void setProductQuantity(int productQuantity) {
-        this.productQuantity = productQuantity;
-    }
-
-    public String getBookShopName() {
-        return bookShopName;
-    }
-
-    public void setBookShopName(String bookShopName) {
-        this.bookShopName = bookShopName;
-    }
-
-    private int productQuantity;
-    private String bookShopName;
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
 
     public String getProductName() {
         return productName;
@@ -67,4 +39,14 @@ public class AddProductRequest {
 
     private String productDescription;
     private int productPrice;
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    private int productQuantity;
 }

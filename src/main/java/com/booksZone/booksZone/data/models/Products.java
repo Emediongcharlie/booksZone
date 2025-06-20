@@ -39,6 +39,27 @@ public class Products {
     private String productDescription;
     private int productPrice;
 
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public String getBookShopName() {
+        return bookShopName;
+    }
+
+    public void setBookShopName(String bookShopName) {
+        this.bookShopName = bookShopName;
+    }
+
+    @Column(nullable = false)
+    private int productQuantity;
+    @Column(nullable = false)
+    private String bookShopName;
+
     public String getAuthorsName() {
         return authorsName;
     }
