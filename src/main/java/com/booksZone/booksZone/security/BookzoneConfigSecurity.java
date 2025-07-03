@@ -33,19 +33,6 @@ public class BookzoneConfigSecurity {
             return provider;
         }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/seller/**").hasRole("SELLER")
-//                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(withDefaults());
-//
-//        return http.build();
-//    }
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
