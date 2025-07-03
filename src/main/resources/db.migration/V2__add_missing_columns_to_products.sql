@@ -1,0 +1,2 @@
+ALTER TABLE products ADD COLUMN book_shop_name VARCHAR(255) NOT NULL;
+ALTER TABLE products ADD COLUMN authors_name VARCHAR(255);

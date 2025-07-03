@@ -7,6 +7,10 @@ import com.booksZone.booksZone.data.repositories.SellersRepo;
 import com.booksZone.booksZone.dtos.requests.*;
 import com.booksZone.booksZone.dtos.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +22,8 @@ public class UserServiceImpl implements UserService{
     private SellersRepo sellersRepo;
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public SellersRegistrationResponse registerSeller(SellersRegistrationRequest registerRequest) {
@@ -25,7 +31,7 @@ public class UserServiceImpl implements UserService{
         seller.setFirstName(registerRequest.getFirstName());
         seller.setLastName(registerRequest.getLastName());
         seller.setEmail(registerRequest.getEmail());
-        seller.setPassword(registerRequest.getPassword());
+        seller.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         sellersRepo.save(seller);
         SellersRegistrationResponse registerResponse = new SellersRegistrationResponse();
         registerResponse.setFirstName(seller.getFirstName());
@@ -56,7 +62,8 @@ public class UserServiceImpl implements UserService{
         customer.setFirstName(registerCustomerRequest.getFirstName());
         customer.setLastName(registerCustomerRequest.getLastName());
         customer.setEmail(registerCustomerRequest.getEmail());
-        customer.setPassword(registerCustomerRequest.getPassword());
+        customer.setPhoneNumber(registerCustomerRequest.getPhoneNumber());
+        customer.setPassword(passwordEncoder.encode(registerCustomerRequest.getPassword()));
         customerRepo.save(customer);
         CustomerRegistrationResponse registerResponse = new CustomerRegistrationResponse();
         registerResponse.setFirstName(customer.getFirstName());
@@ -109,6 +116,29 @@ public class UserServiceImpl implements UserService{
         findCustomerByIdResponse.setId(customer.getId());
         findCustomerByIdResponse.setMessage("user with id" + customer.getId() +"found");
         return findCustomerByIdResponse;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = customerRepo.findByEmail(email).orElse(null);
+        if (customer != null) {
+            return User.builder()
+                    .username(customer.getEmail())
+                    .password(customer.getPassword())
+                    .roles("CUSTOMER")
+                    .build();
+        }
+
+        Sellers seller = sellersRepo.findByEmail(email).orElse(null);
+        if (seller != null) {
+            return User.builder()
+                    .username(seller.getEmail())
+                    .password(seller.getPassword())
+                    .roles("SELLER")
+                    .build();
+        }
+
+        throw new UsernameNotFoundException("User not found with email: " + email);
     }
 
 }

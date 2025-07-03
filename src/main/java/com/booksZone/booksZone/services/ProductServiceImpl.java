@@ -3,7 +3,6 @@ package com.booksZone.booksZone.services;
 import com.booksZone.booksZone.data.models.Products;
 import com.booksZone.booksZone.data.repositories.ProductRepo;
 import com.booksZone.booksZone.dtos.requests.AddProductRequest;
-import com.booksZone.booksZone.dtos.requests.DeleteProductRequest;
 import com.booksZone.booksZone.dtos.requests.EditProductRequest;
 import com.booksZone.booksZone.dtos.requests.FindProductByNameRequest;
 import com.booksZone.booksZone.dtos.response.AddProductResponse;
@@ -23,6 +22,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public AddProductResponse addProduct(AddProductRequest addProductRequest) {
+
+        if (addProductRequest == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+
         Products product = new Products();
         product.setProductName(addProductRequest.getProductName());
         product.setProductDescription(addProductRequest.getProductDescription());
@@ -33,20 +37,24 @@ public class ProductServiceImpl implements ProductService {
         productRepo.save(product);
         AddProductResponse addProductResponse = new AddProductResponse();
         addProductResponse.setProductName(product.getProductName());
-        addProductResponse.setMessage("Product with name" + addProductRequest.getProductName() + "added successfully");
+        addProductResponse.setBookShopName(product.getBookShopName());
+        addProductResponse.setMessage("Product with name " + addProductRequest.getProductName() + " added successfully");
         return addProductResponse;
     }
 
     @Override
-    public DeleteProductResponse deleteProductById(DeleteProductRequest deleteProductRequest) {
-        Products product = productRepo.findById(deleteProductRequest.getProductId())
+    public DeleteProductResponse deleteProductById(Long productId) {
+        Products product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        productRepo.delete(product);
 
         DeleteProductResponse deleteProductResponse = new DeleteProductResponse();
         deleteProductResponse.setId(product.getId());
-        deleteProductResponse.setMessage("Product with id" + deleteProductRequest.getProductId() + "deleted successfully");
+        deleteProductResponse.setMessage("Product with id " + productId + " deleted successfully");
         return deleteProductResponse;
     }
+
 
     @Override
     public FindProductByNameResponse findProduct(FindProductByNameRequest findProductByNameRequest) {
@@ -56,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
         FindProductByNameResponse findProductByNameResponse = new FindProductByNameResponse();
         findProductByNameResponse.setProductName(product.getProductName());
         findProductByNameResponse.setBookShopName(product.getBookShopName());
-        findProductByNameResponse.setMessage("Product with name" + findProductByNameRequest.getProductName() + "found successfully");
+        findProductByNameResponse.setMessage("Product with name " + findProductByNameRequest.getProductName() + " found successfully");
         return findProductByNameResponse;
     }
 
@@ -72,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
         productRepo.save(product);
         EditProductResponse editProductResponse = new EditProductResponse();
         editProductResponse.setId(product.getId());
-        editProductResponse.setMessage("Product with id" + editProductRequest.getProductId() + "edited successfully");
+        editProductResponse.setMessage("Product with id " + editProductRequest.getProductId() + " edited successfully");
         return editProductResponse;
     }
 
