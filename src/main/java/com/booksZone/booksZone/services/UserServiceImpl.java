@@ -18,12 +18,15 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
 
-    @Autowired
-    private SellersRepo sellersRepo;
-    @Autowired
-    private CustomerRepo customerRepo;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final SellersRepo sellersRepo;
+    private final CustomerRepo customerRepo;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(SellersRepo sellersRepo, CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder) {
+        this.sellersRepo = sellersRepo;
+        this.customerRepo = customerRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public SellersRegistrationResponse registerSeller(SellersRegistrationRequest registerRequest) {
